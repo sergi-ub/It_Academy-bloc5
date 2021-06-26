@@ -1,0 +1,103 @@
+{
+    "_id": {
+        "$oid": "5ca4bbcea2dd94ee58162a68"
+    },
+    "username": "fmiller",
+    "name": "Elizabeth Ray",
+    "address": "9286 Bethany Glens\nVasqueztown, CO 22939",
+    "birthdate": {
+        "$date": {
+            "$numberLong": "226117231000"
+        }
+    }
+}
+
+//CREATE TABLE IF NOT EXISTS `mydb`.`Direcciones` (
+  `direcciones_id` INT NOT NULL AUTO_INCREMENT,
+  `direcciones_calle` VARCHAR(45) NULL,
+  `direcciones_numero` INT NULL,
+  `direcciones_piso` VARCHAR(40) NULL,
+  `direcciones_puerta` SMALLINT(8) NULL,
+  `direcciones_codigoPostal` INT(5) NULL,
+  `direcciones_pais` VARCHAR(45) NULL,
+  PRIMARY KEY (`direcciones_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Trabajador`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Trabajador` (
+  `trabajador_id` INT NOT NULL AUTO_INCREMENT,
+  `trabajador_nombre` VARCHAR(45) NULL,
+  `trabajador_apellido` VARCHAR(45) NULL,
+  `trabajador_ventas` VARCHAR(45) NULL,
+  `Direcciones_direcciones_id` INT NOT NULL,
+  PRIMARY KEY (`trabajador_id`),
+  INDEX `fk_Trabajador_Direcciones1_idx` (`Direcciones_direcciones_id` ASC),
+  CONSTRAINT `fk_Trabajador_Direcciones1`
+    FOREIGN KEY (`Direcciones_direcciones_id`)
+    REFERENCES `mydb`.`Direcciones` (`direcciones_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Proveedor`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Proveedor` (
+  `proveedor_id` INT NOT NULL AUTO_INCREMENT,
+  `proveedor_nombre` VARCHAR(45) NULL,
+  `proveedor_direccion` VARCHAR(45) NULL,
+  `proveedor_telefono` INT(13) NULL,
+  `proveedor_cif` VARCHAR(9) NULL,
+  `Direcciones_direcciones_id` INT NOT NULL,
+  PRIMARY KEY (`proveedor_id`),
+  INDEX `fk_Proveedor_Direcciones1_idx` (`Direcciones_direcciones_id` ASC),
+  CONSTRAINT `fk_Proveedor_Direcciones1`
+    FOREIGN KEY (`Direcciones_direcciones_id`)
+    REFERENCES `mydb`.`Direcciones` (`direcciones_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`cliente`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`cliente` (
+  `cliente_id` INT NOT NULL AUTO_INCREMENT,
+  `cliente_nombre` VARCHAR(45) NULL,
+  `cliente_calle` VARCHAR(45) NULL,
+  `cliente_telefono` INT(13) NULL,
+  `cliente_mail` VARCHAR(45) NULL,
+  `cliente_fechaRegistro` DATETIME NULL,
+  `cliente_gafas` VARCHAR(45) NULL COMMENT '	',
+  `cliente_recomendación` VARCHAR(45) BINARY NULL COMMENT 'Sí o no',
+  `Direcciones_direcciones_id` INT NOT NULL,
+  PRIMARY KEY (`cliente_id`),
+  INDEX `fk_cliente_Direcciones1_idx` (`Direcciones_direcciones_id` ASC),
+  CONSTRAINT `fk_cliente_Direcciones1`
+    FOREIGN KEY (`Direcciones_direcciones_id`)
+    REFERENCES `mydb`.`Direcciones` (`direcciones_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`gafas`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`gafas` (
+  `gafas_id` INT NOT NULL AUTO_INCREMENT,
+  `gafas_modelo` VARCHAR(45) NULL,
+  `gafas_proveedor` VARCHAR(45) NULL,
+  `gafas_graduacionIzquierda` FLOAT NULL,
+  `gafas_graduacionDerecha` FLOAT NULL,
+  `gafas_tipoMontura` VARCHAR(45) NULL COMMENT 'Flotante\nPasta \nMetalica',
+  `gafas_colorMontura` VARCHAR(45) NULL,
+  `gafas_colorCristales` VARCHAR(45) NULL,
+  `gafas_precio` FLOAT NULL COMMENT '	',
+  `gafas_trabajador` VARCHAR(45) NULL COMMENT '	',
+  `Proveedor_proveedor_id` INT NOT NULL,
