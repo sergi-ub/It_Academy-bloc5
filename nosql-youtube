@@ -1,0 +1,93 @@
+Usuaris
+{
+    "_id": {
+        "$oid": "1"
+    },
+    "mail": "marta@gmail.com",
+    "password": "*****",
+    "nom": "Marta1",
+    "dataNaixement": 2000-04-23,
+    "sexe": "1",
+    "pais": "Espanya",
+    "codiPostal": "08019",
+}
+
+Video
+{
+    "_id": {
+        "$oid": "11"
+    },
+    "titol": "Patchwork1",
+    "descripcio": "Primeres passes en patchwork",
+    "tamany": "20Gb",
+    "nomArxiu": "patchwork-marta.mp4",
+    "duracio": T00:09:45.511Z,
+    "reproduccions": "20",
+    "likes": "50",
+    "dislikes": "5",
+    "estat": 21,
+    "etiqueta": 31,
+    "creacio": 2020-06-16,
+    "comentaris": 61,
+    
+    
+Estat
+{
+    "_id": {
+        "$oid": "21"
+    },
+    "nom": "Públic",
+}
+
+{
+    "_id": {
+        "$oid": "22"
+    },
+    "nom": "Privat",
+}
+{
+    "_id": {
+        "$oid": "23"
+    },
+    "nom": "Ocult",
+}
+
+Etiqueta
+{
+    "_id": {
+        "$oid": "31"
+    },
+    "nom": "Handmade",
+    "video": 11,
+}
+
+Playlist
+{
+    "_id": {
+        "$oid": "41"
+    },
+    "nom": "Fet-a-Mà",
+    "descripcio": "Videos penjats relacionats amb les manualitats fetes amb diferents teixits i materials",
+    "creacio": 2018-05-19,
+    "estat: 22,
+}
+
+Canal
+{
+    "_id": {
+        "$oid": "51"
+    },
+    "nom": "Manualitats",
+    "descripcio": "Videos penjats relacionats amb les manualitats fetes amb diferents teixits i materials",
+    "creacio": 2017-03-10,
+}
+
+Comentaris
+{
+    "_id": {
+        "$oid": "61"
+    },
+    "nom": "Video molt complet",
+    "creacio": 2020-09-10T:17:45.511Z,
+    "video": 1,
+}
