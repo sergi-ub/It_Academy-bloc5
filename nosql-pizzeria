@@ -1,0 +1,211 @@
+Direccions
+{
+    "_id": {
+        "$oid": "1"
+    },
+    "carrer": "Tarragona",
+    "numero": "30",
+    "pis": "1",
+    "porta": "2",
+    "codiPostal": "08015",
+    "pais": "Espanya",
+}
+{
+    "_id": {
+        "$oid": "2"
+    },
+    "carrer": "Marina",
+    "numero": "52",
+    "pis": "5",
+    "porta": "2",
+    "codiPostal": "08015",
+    "pais": "Espanya",
+}
+
+{
+    "_id": {
+        "$oid": "3"
+    },
+    "carrer": "Balmes",
+    "numero": "520",
+    "pis": "6",
+    "porta": "4",
+    "codiPostal": "08022",
+    "pais": "Espanya",
+}
+
+Treballadors
+{
+    "_id": {
+        "$oid": "11"
+    },
+    "nom": "Pol",
+    "cognom": "Lopez",
+    "telf": "616616616",
+    "dni": "456372634C",
+    "botiga": 21,
+}
+
+Botigues
+{
+    "_id": {
+        "$oid": "21"
+    },
+    "direccions": 1,
+
+
+Proveidors
+{
+    "_id": {
+        "$oid": "21"
+    },
+    "nom": "Luxotica",
+    "direccions": 2,
+    "telefon": "900122122",
+    "cif": B65472625D,
+}
+
+Clients
+{
+    "_id": {
+        "$oid": "31"
+    },
+    "nom": "Marta",
+    "cognom": "Peris",
+    "telf": "678998656",
+    "mail": "mperis@gmail.com",
+    "direccions": 3,
+    "ulleres": 1,
+    "recomenació": "si",
+    "dataRegistre": 2021-04-23T18:25:43.511Z,
+}
+
+Ulleres
+{
+    "_id": {
+        "$oid": "41"
+    },
+    "model": "Rayban",
+    "proveidors": 21,
+    "graduacióEsq": "0,25",
+    "graduacióDta": "1,25",
+    "tipusMuntura": "quadrada",
+    "colorMuntura": "transparent",
+    "colorVidres": "verd",
+    "preu": "130",
+    "treballadors": 11,
+}    
+
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`CategoriaPizza`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`CategoriaPizza` (
+  `Categoria_id` INT NOT NULL COMMENT 'Categoríaia de pizza. 1 pizza solo puede ser de 1 categoría; 1 categoría puede contener varias pizzas.',
+  `Categoria_nombre` VARCHAR(45) NULL,
+  UNIQUE INDEX `Categoria_id_UNIQUE` (`Categoria_id` ASC),
+  PRIMARY KEY (`Categoria_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Ubicacion`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Ubicacion` (
+  `Ubicacion_id` INT NOT NULL AUTO_INCREMENT,
+  `Ubicacion_localidad` VARCHAR(45) NULL,
+  `Ubicacion_provincia` VARCHAR(45) NULL,
+  `Trabajador_Trabajador_id` INT NOT NULL,
+  `Tienda_Tienda_id` INT NOT NULL,
+  PRIMARY KEY (`Ubicacion_id`, `Trabajador_Trabajador_id`, `Tienda_Tienda_id`),
+  UNIQUE INDEX `direcciones_localidad_UNIQUE` (`Ubicacion_localidad` ASC),
+  UNIQUE INDEX `Direcciones_provincia_UNIQUE` (`Ubicacion_provincia` ASC),
+  INDEX `fk_Ubicacion_Trabajador1_idx` (`Trabajador_Trabajador_id` ASC),
+  INDEX `fk_Ubicacion_Tienda1_idx` (`Tienda_Tienda_id` ASC),
+  CONSTRAINT `fk_Ubicacion_Trabajador1`
+    FOREIGN KEY (`Trabajador_Trabajador_id`)
+    REFERENCES `mydb`.`Trabajador` (`Trabajador_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_Ubicacion_Tienda1`
+    FOREIGN KEY (`Tienda_Tienda_id`)
+    REFERENCES `mydb`.`Tienda` (`Tienda_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Cliente`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Cliente` (
+  `Cliente_id` INT NOT NULL AUTO_INCREMENT,
+  `Cliente_nombre` VARCHAR(45) NULL,
+  `Cliente_apellido` VARCHAR(45) NULL,
+  `Cliente_calle` VARCHAR(45) NULL,
+  `Cliente_telefono` INT(13) NULL,
+  `Cliente_CP` VARCHAR(45) NULL,
+  `Ubicacion_Ubicacion_id` INT NOT NULL,
+  PRIMARY KEY (`Cliente_id`, `Ubicacion_Ubicacion_id`),
+  INDEX `fk_Cliente_Ubicacion1_idx` (`Ubicacion_Ubicacion_id` ASC),
+  CONSTRAINT `fk_Cliente_Ubicacion1`
+    FOREIGN KEY (`Ubicacion_Ubicacion_id`)
+    REFERENCES `mydb`.`Ubicacion` (`Ubicacion_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Pedido`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Pedido` (
+  `Pedido_id` INT NOT NULL,
+  `Pedido_fecha` DATETIME NULL,
+  `Pedido_repartoDomicilio` VARCHAR(10) BINARY NULL COMMENT 'Si | No',
+  `Pedido_cantidad` INT NULL,
+  `Pedido_precio` FLOAT NULL,
+  `Cliente_Cliente_id` INT NOT NULL,
+  PRIMARY KEY (`Pedido_id`, `Cliente_Cliente_id`),
+  UNIQUE INDEX `Pedido_id_UNIQUE` (`Pedido_id` ASC),
+  INDEX `fk_Pedido_Cliente_idx` (`Cliente_Cliente_id` ASC),
+  CONSTRAINT `fk_Pedido_Cliente`
+    FOREIGN KEY (`Cliente_Cliente_id`)
+    REFERENCES `mydb`.`Cliente` (`Cliente_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Producto`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Producto` (
+  `producto_id` INT NOT NULL AUTO_INCREMENT,
+  `producto_nombre` VARCHAR(45) NULL COMMENT 'Hamburguesa\nPizza\nBebida',
+  `producto_descripcion` VARCHAR(45) NULL,
+  `producto_imagen` VARCHAR(100) NULL,
+  `producto_precio` FLOAT NULL COMMENT '	',
+  `CategoriaPizza_Categoria_id` INT NOT NULL,
+  `Pedido_Pedido_id` INT NOT NULL,
+  `Pedido_Cliente_Cliente_id` INT NOT NULL,
+  PRIMARY KEY (`producto_id`, `CategoriaPizza_Categoria_id`, `Pedido_Pedido_id`, `Pedido_Cliente_Cliente_id`),
+  INDEX `fk_Producto_CategoriaPizza1_idx` (`CategoriaPizza_Categoria_id` ASC),
+  INDEX `fk_Producto_Pedido1_idx` (`Pedido_Pedido_id` ASC, `Pedido_Cliente_Cliente_id` ASC),
+  CONSTRAINT `fk_Producto_CategoriaPizza1`
+    FOREIGN KEY (`CategoriaPizza_Categoria_id`)
+    REFERENCES `mydb`.`CategoriaPizza` (`Categoria_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_Producto_Pedido1`
+    FOREIGN KEY (`Pedido_Pedido_id` , `Pedido_Cliente_Cliente_id`)
+    REFERENCES `mydb`.`Pedido` (`Pedido_id` , `Cliente_Cliente_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
