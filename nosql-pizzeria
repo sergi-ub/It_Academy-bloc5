@@ -5,38 +5,22 @@ Direccions
     },
     "carrer": "Tarragona",
     "numero": "30",
-    "pis": "1",
-    "porta": "2",
     "codiPostal": "08015",
     "localitat": "Barcelona",
     "provincia": "Barcelona",
     "pais": "Espanya",
 }
-
--- Table `mydb`.`Ubicacion`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Ubicacion` (
-  `Ubicacion_id` INT NOT NULL AUTO_INCREMENT,
-  `Ubicacion_localidad` VARCHAR(45) NULL,
-  `Ubicacion_provincia` VARCHAR(45) NULL,
-  `Trabajador_Trabajador_id` INT NOT NULL,
-  `Tienda_Tienda_id` INT NOT NULL,
-  PRIMARY KEY (`Ubicacion_id`, `Trabajador_Trabajador_id`, `Tienda_Tienda_id`),
-  UNIQUE INDEX `direcciones_localidad_UNIQUE` (`Ubicacion_localidad` ASC),
-  UNIQUE INDEX `Direcciones_provincia_UNIQUE` (`Ubicacion_provincia` ASC),
-  INDEX `fk_Ubicacion_Trabajador1_idx` (`Trabajador_Trabajador_id` ASC),
-  INDEX `fk_Ubicacion_Tienda1_idx` (`Tienda_Tienda_id` ASC),
-  CONSTRAINT `fk_Ubicacion_Trabajador1`
-    FOREIGN KEY (`Trabajador_Trabajador_id`)
-    REFERENCES `mydb`.`Trabajador` (`Trabajador_id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_Ubicacion_Tienda1`
-    FOREIGN KEY (`Tienda_Tienda_id`)
-    REFERENCES `mydb`.`Tienda` (`Tienda_id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
+{
+    "_id": {
+        "$oid": "2"
+    },
+    "carrer": "Paris",
+    "numero": "30",
+    "codiPostal": "08025",
+    "localitat": "Barcelona",
+    "provincia": "Barcelona",
+    "pais": "Espanya",
+}
 
 
 Treballadors
@@ -57,7 +41,7 @@ Botigues
         "$oid": "21"
     },
     "direccions": 1,
-
+}
 
 Clients
 {
@@ -65,35 +49,33 @@ Clients
         "$oid": "31"
     },
     "nom": "Marta",
-    "cognom": "Peris",
+    "cognom": "Pons",
     "telf": "678998656",
-    "mail": "mperis@gmail.com",
-    "direccions": 3,
-    "ulleres": 1,
-    "recomenació": "si",
-    "dataRegistre": 2021-04-23T18:25:43.511Z,
+    "mail": "mpons@gmail.com",
+    "direccions": 2,
+    
 }
 
--- -----------------------------------------------------
--- Table `mydb`.`Cliente`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Cliente` (
-  `Cliente_id` INT NOT NULL AUTO_INCREMENT,
-  `Cliente_nombre` VARCHAR(45) NULL,
-  `Cliente_apellido` VARCHAR(45) NULL,
-  `Cliente_calle` VARCHAR(45) NULL,
-  `Cliente_telefono` INT(13) NULL,
-  `Cliente_CP` VARCHAR(45) NULL,
-  `Ubicacion_Ubicacion_id` INT NOT NULL,
-  PRIMARY KEY (`Cliente_id`, `Ubicacion_Ubicacion_id`),
-  INDEX `fk_Cliente_Ubicacion1_idx` (`Ubicacion_Ubicacion_id` ASC),
-
-Ulleres
+Categoria-pizza
 {
     "_id": {
         "$oid": "41"
     },
-    "model": "Rayban",
+    "nom": "Pizza Margarita",
+}
+{
+    "_id": {
+        "$oid": "42"
+    },
+    "nom": "Pizza Barbacoa",
+}
+
+Producte
+{
+    "_id": {
+        "$oid": "51"
+    },
+    "nom": "Rayban",
     "proveidors": 21,
     "graduacióEsq": "0,25",
     "graduacióDta": "1,25",
@@ -103,17 +85,6 @@ Ulleres
     "preu": "130",
     "treballadors": 11,
 }    
-
-
--- -----------------------------------------------------
--- Table `mydb`.`CategoriaPizza`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`CategoriaPizza` (
-  `Categoria_id` INT NOT NULL COMMENT 'Categoríaia de pizza. 1 pizza solo puede ser de 1 categoría; 1 categoría puede contener varias pizzas.',
-  `Categoria_nombre` VARCHAR(45) NULL,
-  UNIQUE INDEX `Categoria_id_UNIQUE` (`Categoria_id` ASC),
-  PRIMARY KEY (`Categoria_id`))
-ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -142,6 +113,11 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Producto` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
+
+
+    "dataRegistre": 2021-04-23T18:25:43.511Z,
+
+
 
 -- -----------------------------------------------------
 -- Table `mydb`.`Pedido`
